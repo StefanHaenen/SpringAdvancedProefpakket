@@ -4,6 +4,9 @@ package be.vdab.proefpakket.domain;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -12,15 +15,11 @@ import java.io.Serializable;
 @Embeddable
 public class Adres implements Serializable {
     private static final long serialVersionUID = 1L;
-    @NotBlank
     private String straat;
-    @NotBlank
     private String huisNr;
-    @NotNull
-    @Range(min = 1000, max = 9999)
-    private int postcode;
-    @NotBlank
-    private String gemeente;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "gemeenteid")
+    private Gemeente gemeente;
 // Je maakt getters voor alle variabelen (behalve serialVersionUID)
 
     public String getStraat() {
@@ -31,11 +30,7 @@ public class Adres implements Serializable {
         return huisNr;
     }
 
-    public int getPostcode() {
-        return postcode;
-    }
-
-    public String getGemeente() {
+    public Gemeente getGemeente() {
         return gemeente;
     }
 }
